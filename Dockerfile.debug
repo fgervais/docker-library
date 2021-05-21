@@ -1,0 +1,23 @@
+FROM ubuntu:20.10
+
+RUN apt-get update && apt-get install -y \
+	# strings
+	binutils \
+	bridge-utils \
+	btrfs-progs \
+	curl \
+	dmsetup \
+	gdisk \
+	git \
+	iproute2 \
+	python3 \
+	silversearcher-ag \
+	strace \
+	vim
+# fzf doesn't really want to install system wide, we need to trick it.
+ENV HOME=/usr/lib
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+	~/.fzf/install --no-update-rc && \
+	echo "source /usr/lib/.fzf.bash" >> /etc/bash.bashrc
+ENV HOME=/root
+CMD ["/bin/bash"]
